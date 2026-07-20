@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EFC18241 — QTL Status | 2026-06-11</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Serif+Display&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0b1220;
+      --surface: #121c2e;
+      --surface-2: #18243a;
+      --border: rgba(255,255,255,.08);
+      --text: #eef2f8;
+      --muted: #8fa0b8;
+      --accent: #4f8cff;
+      --green: #2dd4a0;
+      --amber: #f5b942;
+      --orange: #ff8b4a;
+      --red: #ff5c6c;
+      --purple: #a78bfa;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: "DM Sans", system-ui, sans-serif;
+      background: #060a12;
+      color: var(--text);
+      padding: 32px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 40px;
+    }
+
+    .slide {
+      width: 1280px;
+      height: 720px;
+      background:
+        radial-gradient(1200px 600px at 0% 0%, rgba(79,140,255,.14), transparent 55%),
+        radial-gradient(900px 500px at 100% 100%, rgba(167,139,250,.10), transparent 50%),
+        linear-gradient(160deg, #0b1220 0%, #0f1728 45%, #0b1220 100%);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 44px 48px 40px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 30px 80px rgba(0,0,0,.45);
+      page-break-after: always;
+    }
+
+    .slide::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: linear-gradient(rgba(255,255,255,.02) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(255,255,255,.02) 1px, transparent 1px);
+      background-size: 40px 40px;
+      mask-image: radial-gradient(circle at 50% 30%, black, transparent 75%);
+      pointer-events: none;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 28px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .eyebrow {
+      font-size: 11px;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    h1 {
+      font-family: "DM Serif Display", Georgia, serif;
+      font-size: 38px;
+      font-weight: 400;
+      line-height: 1.1;
+      letter-spacing: -.02em;
+    }
+
+    .subtitle {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      border-radius: 999px;
+      background: rgba(255,92,108,.12);
+      border: 1px solid rgba(255,92,108,.35);
+      color: #ffb4bc;
+      font-size: 13px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .badge .dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--red);
+      box-shadow: 0 0 12px var(--red);
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap: 20px;
+      position: relative;
+      z-index: 1;
+      height: calc(100% - 110px);
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      position: relative;
+      z-index: 1;
+      height: calc(100% - 110px);
+    }
+
+    .card {
+      background: rgba(18,28,46,.82);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 18px 20px;
+      backdrop-filter: blur(8px);
+    }
+
+    .card h2 {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .14em;
+      color: var(--muted);
+      margin-bottom: 14px;
+      font-weight: 600;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12.5px;
+    }
+
+    th {
+      text-align: left;
+      color: var(--muted);
+      font-weight: 600;
+      font-size: 10px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      padding: 0 8px 10px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    td {
+      padding: 9px 8px 9px 0;
+      border-bottom: 1px solid rgba(255,255,255,.04);
+      vertical-align: middle;
+    }
+
+    tr:last-child td { border-bottom: none; }
+
+    .metric { font-weight: 600; color: #fff; }
+    .num { font-variant-numeric: tabular-nums; }
+
+    .status {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+    }
+
+    .ok { background: rgba(45,212,160,.14); color: #7ef0c8; border: 1px solid rgba(45,212,160,.25); }
+    .warn { background: rgba(245,185,66,.14); color: #ffd98a; border: 1px solid rgba(245,185,66,.25); }
+    .crit { background: rgba(255,92,108,.14); color: #ffb4bc; border: 1px solid rgba(255,92,108,.28); }
+
+    .kpi-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .kpi {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 14px 16px;
+    }
+
+    .kpi .label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .kpi .value {
+      font-size: 28px;
+      font-weight: 700;
+      line-height: 1;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .kpi .sub {
+      margin-top: 6px;
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .kpi.critical .value { color: var(--red); }
+    .kpi.watch .value { color: var(--amber); }
+    .kpi.good .value { color: var(--green); }
+
+    .bar-list { display: flex; flex-direction: column; gap: 10px; }
+
+    .bar-item { display: grid; grid-template-columns: 42px 1fr 54px; gap: 10px; align-items: center; font-size: 12px; }
+    .bar-item .region { color: #fff; font-weight: 600; }
+    .bar-track { height: 8px; background: rgba(255,255,255,.06); border-radius: 999px; overflow: hidden; }
+    .bar-fill { height: 100%; border-radius: 999px; }
+    .bar-pct { text-align: right; color: var(--muted); font-variant-numeric: tabular-nums; font-size: 11px; }
+
+    .actions {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .action {
+      display: grid;
+      grid-template-columns: 36px 1fr;
+      gap: 12px;
+      align-items: start;
+      padding: 12px 14px;
+      background: var(--surface-2);
+      border-radius: 12px;
+      border: 1px solid var(--border);
+    }
+
+    .prio {
+      width: 36px; height: 36px;
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .p1 { background: rgba(255,92,108,.18); color: #ffb4bc; }
+    .p2 { background: rgba(245,185,66,.16); color: #ffd98a; }
+    .p3 { background: rgba(79,140,255,.16); color: #9ec0ff; }
+
+    .action strong { display: block; font-size: 13px; margin-bottom: 3px; }
+    .action span { color: var(--muted); font-size: 11.5px; line-height: 1.45; }
+
+    .footer {
+      position: absolute;
+      left: 48px; right: 48px; bottom: 22px;
+      display: flex;
+      justify-content: space-between;
+      color: var(--muted);
+      font-size: 10px;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      z-index: 1;
+    }
+
+    .hotspot-tag {
+      display: inline-block;
+      margin-left: 6px;
+      padding: 2px 7px;
+      border-radius: 6px;
+      background: rgba(167,139,250,.15);
+      color: #d4c4ff;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: .05em;
+      vertical-align: middle;
+    }
+
+    .dual { color: var(--purple); font-weight: 700; font-size: 10px; }
+
+    @media print {
+      body { background: white; padding: 0; }
+      .slide { box-shadow: none; margin: 0; border-radius: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- SLIDE 1: EXECUTIVE SUMMARY -->
+  <section class="slide">
+    <div class="header">
+      <div>
+        <div class="eyebrow">Study EFC18241 · CluePoints QTL</div>
+        <h1>Quality Tolerance Limit Status</h1>
+        <div class="subtitle">Snapshot 11 Jun 2026 · 4th KRI · 255 randomized participants</div>
+      </div>
+      <div class="badge"><span class="dot"></span> Overall Risk: Moderate–High</div>
+    </div>
+
+    <div class="grid-3">
+      <div class="card">
+        <h2>QTL Dashboard</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>QTL</th>
+              <th>Observed</th>
+              <th>USS</th>
+              <th>UTL</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="metric">PEOT</td>
+              <td class="num">0.8%</td><td class="num">—</td><td class="num">10%</td>
+              <td><span class="status ok">Within</span></td>
+            </tr>
+            <tr>
+              <td class="metric">MHBA1C</td>
+              <td class="num">3.8%</td><td class="num">5%</td><td class="num">10%</td>
+              <td><span class="status ok">Within</span></td>
+            </tr>
+            <tr>
+              <td class="metric">MPINSUL</td>
+              <td class="num">7.7%</td><td class="num">5%</td><td class="num">20%</td>
+              <td><span class="status warn">Above USS</span></td>
+            </tr>
+            <tr>
+              <td class="metric">MMMTT</td>
+              <td class="num">9.0%</td><td class="num">5%</td><td class="num">10%</td>
+              <td><span class="status warn">Above USS</span></td>
+            </tr>
+            <tr>
+              <td class="metric">MTIR</td>
+              <td class="num" style="color:#ff8b9a;font-weight:700">40.6%</td><td class="num">5%</td><td class="num">10%</td>
+              <td><span class="status crit">Above UTL</span></td>
+            </tr>
+            <tr>
+              <td class="metric">MINSUL</td>
+              <td class="num">18.0%</td><td class="num">5%</td><td class="num">20%</td>
+              <td><span class="status warn">Above USS</span></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div style="margin-top:18px; display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+          <div class="kpi good">
+            <div class="label">HbA1c Trend</div>
+            <div class="value">↓ 18% → 4%</div>
+            <div class="sub">Strong improvement since April</div>
+          </div>
+          <div class="kpi critical">
+            <div class="label">TIR Gap</div>
+            <div class="value">93 / 229</div>
+            <div class="sub">4× above tolerance limit</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex; flex-direction:column; gap:16px;">
+        <div class="card" style="flex:1;">
+          <h2>Priority Actions</h2>
+          <div class="actions">
+            <div class="action">
+              <div class="prio p1">P1</div>
+              <div>
+                <strong>MTIR mitigation — CGM / Clario workflow</strong>
+                <span>Target CHN, ESP, BRA. Most gaps at Visit 2 D1.</span>
+              </div>
+            </div>
+            <div class="action">
+              <div class="prio p2">P2</div>
+              <div>
+                <strong>MINSUL — insulin diary retraining</strong>
+                <span>18% missing; approaching 20% tolerance. Focus BRA &amp; POL sites.</span>
+              </div>
+            </div>
+            <div class="action">
+              <div class="prio p2">P2</div>
+              <div>
+                <strong>MPINSUL &amp; MMMTT follow-up</strong>
+                <span>Reinforce eDiary and MMTT sample collection at W4+ visits.</span>
+              </div>
+            </div>
+            <div class="action">
+              <div class="prio p3">P3</div>
+              <div>
+                <strong>MHBA1C &amp; PEOT monitoring</strong>
+                <span>9 pending central-lab samples; 2 early discontinuations.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <span>EFC18241 · QTL Report</span>
+      <span>Slide 1 of 2</span>
+    </div>
+  </section>
+
+  <!-- SLIDE 2: HOTSPOT DRILL-DOWN -->
+  <section class="slide">
+    <div class="header">
+      <div>
+        <div class="eyebrow">Site-Level Drill-Down</div>
+        <h1>MTIR &amp; MINSUL Hotspots</h1>
+        <div class="subtitle">Sites and regions requiring targeted operational support</div>
+      </div>
+      <div class="badge" style="background:rgba(167,139,250,.12);border-color:rgba(167,139,250,.35);color:#d4c4ff;">
+        <span class="dot" style="background:var(--purple);box-shadow:0 0 12px var(--purple)"></span>
+        5 Dual-Risk Sites
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <h2>MTIR — Missing TIR by Region</h2>
+        <div class="kpi-row">
+          <div class="kpi critical">
+            <div class="label">Overall</div>
+            <div class="value">40.6%</div>
+            <div class="sub">93 of 229 eligible</div>
+          </div>
+          <div class="kpi critical">
+            <div class="label">Top Region</div>
+            <div class="value">CHN</div>
+            <div class="sub">33 misses (63%)</div>
+          </div>
+          <div class="kpi watch">
+            <div class="label">Pattern</div>
+            <div class="value" style="font-size:18px;margin-top:6px">Visit 2 D1</div>
+            <div class="sub">CGM upload / eCRF gap</div>
+          </div>
+        </div>
+
+        <div class="bar-list">
+          <div class="bar-item"><span class="region">CHN</span><div class="bar-track"><div class="bar-fill" style="width:63%;background:linear-gradient(90deg,#ff5c6c,#ff8b4a)"></div></div><span class="bar-pct">63%</span></div>
+          <div class="bar-item"><span class="region">CZE</span><div class="bar-track"><div class="bar-fill" style="width:58%;background:linear-gradient(90deg,#ff5c6c,#ff8b4a)"></div></div><span class="bar-pct">58%</span></div>
+          <div class="bar-item"><span class="region">ISR</span><div class="bar-track"><div class="bar-fill" style="width:57%;background:linear-gradient(90deg,#ff5c6c,#ff8b4a)"></div></div><span class="bar-pct">57%</span></div>
+          <div class="bar-item"><span class="region">BRA</span><div class="bar-track"><div class="bar-fill" style="width:53%;background:linear-gradient(90deg,#f5b942,#ff8b4a)"></div></div><span class="bar-pct">53%</span></div>
+          <div class="bar-item"><span class="region">ESP</span><div class="bar-track"><div class="bar-fill" style="width:47%;background:linear-gradient(90deg,#f5b942,#ff8b4a)"></div></div><span class="bar-pct">47%</span></div>
+          <div class="bar-item"><span class="region">USA</span><div class="bar-track"><div class="bar-fill" style="width:19%;background:linear-gradient(90deg,#4f8cff,#2dd4a0)"></div></div><span class="bar-pct">19%</span></div>
+        </div>
+
+        <table style="margin-top:16px">
+          <thead><tr><th>Top MTIR Sites</th><th>Region</th><th>Miss / N</th><th>Rate</th></tr></thead>
+          <tbody>
+            <tr><td class="metric">2030001</td><td>CZE</td><td class="num">6 / 9</td><td class="num">67%</td></tr>
+            <tr><td class="metric">1560016</td><td>CHN</td><td class="num">5 / 5</td><td class="num">100%</td></tr>
+            <tr><td class="metric">7240014 / 7240021</td><td>ESP</td><td class="num">4 / 4 each</td><td class="num">100%</td></tr>
+            <tr><td class="metric">0760006<span class="hotspot-tag">DUAL</span></td><td>BRA</td><td class="num">4 / 5</td><td class="num">80%</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="card">
+        <h2>MINSUL — Missing Insulin Diary by Region</h2>
+        <div class="kpi-row">
+          <div class="kpi watch">
+            <div class="label">Overall</div>
+            <div class="value">18.0%</div>
+            <div class="sub">59 of 327 visits</div>
+          </div>
+          <div class="kpi watch">
+            <div class="label">Top Region</div>
+            <div class="value">POL</div>
+            <div class="sub">50% miss rate</div>
+          </div>
+          <div class="kpi watch">
+            <div class="label">Risk</div>
+            <div class="value" style="font-size:18px;margin-top:6px">Near UTL</div>
+            <div class="sub">20% tolerance limit</div>
+          </div>
+        </div>
+
+        <div class="bar-list">
+          <div class="bar-item"><span class="region">POL</span><div class="bar-track"><div class="bar-fill" style="width:50%;background:linear-gradient(90deg,#f5b942,#ff8b4a)"></div></div><span class="bar-pct">50%</span></div>
+          <div class="bar-item"><span class="region">ISR</span><div class="bar-track"><div class="bar-fill" style="width:44%;background:linear-gradient(90deg,#f5b942,#ff8b4a)"></div></div><span class="bar-pct">44%</span></div>
+          <div class="bar-item"><span class="region">BRA</span><div class="bar-track"><div class="bar-fill" style="width:42%;background:linear-gradient(90deg,#f5b942,#ff8b4a)"></div></div><span class="bar-pct">42%</span></div>
+          <div class="bar-item"><span class="region">ARG</span><div class="bar-track"><div class="bar-fill" style="width:38%;background:linear-gradient(90deg,#f5b942,#ff8b4a)"></div></div><span class="bar-pct">38%</span></div>
+          <div class="bar-item"><span class="region">USA</span><div class="bar-track"><div class="bar-fill" style="width:19%;background:linear-gradient(90deg,#4f8cff,#2dd4a0)"></div></div><span class="bar-pct">19%</span></div>
+          <div class="bar-item"><span class="region">CHN</span><div class="bar-track"><div class="bar-fill" style="width:9%;background:linear-gradient(90deg,#4f8cff,#2dd4a0)"></div></div><span class="bar-pct">9%</span></div>
+        </div>
+
+        <table style="margin-top:16px">
+          <thead><tr><th>Top MINSUL Sites</th><th>Region</th><th>Miss / N</th><th>Rate</th></tr></thead>
+          <tbody>
+            <tr><td class="metric">0760009<span class="hotspot-tag">DUAL</span></td><td>BRA</td><td class="num">4 / 4</td><td class="num">100%</td></tr>
+            <tr><td class="metric">0760006<span class="hotspot-tag">DUAL</span></td><td>BRA</td><td class="num">6 / 7</td><td class="num">86%</td></tr>
+            <tr><td class="metric">0320003<span class="hotspot-tag">DUAL</span></td><td>ARG</td><td class="num">2 / 2</td><td class="num">100%</td></tr>
+            <tr><td class="metric">0560006<span class="hotspot-tag">DUAL</span></td><td>BEL</td><td class="num">2 / 2</td><td class="num">100%</td></tr>
+          </tbody>
+        </table>
+
+        <div style="margin-top:14px;padding:12px 14px;background:rgba(167,139,250,.08);border:1px solid rgba(167,139,250,.2);border-radius:12px;font-size:11.5px;color:#d4c4ff;line-height:1.5;">
+          <span class="dual">DUAL-RISK SITES</span> — 0760006, 0760009 (BRA), 0320003 (ARG), 0560006 (BEL), 3760002 (ISR), 7240007 (ESP): recommend urgent joint CGM + eDiary retraining visit.
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <span>EFC18241 · QTL Hotspot Analysis</span>
+      <span>Slide 2 of 2</span>
+    </div>
+  </section>
+
+</body>
+</html>
